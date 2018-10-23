@@ -1,2 +1,0 @@
-# Owners here are default for everything in the repo.
-*       @mlp6 @suyashkumar @dward2
