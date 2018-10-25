@@ -5,6 +5,9 @@ def main():
     files = read_files()
     (time,volt,rawdata) = open_files(files)
     print(volt)
+    (max_t,min_t) = extremes(time)
+    (max_v,min_v) = extremes(volt)
+    #extremes(volt)
     smooth_volt = filter(volt)
 
 
@@ -35,12 +38,18 @@ def open_files(files): #open just 1 file for now
     #print(volt)
     return(time,volt,rawdata)
 
+def extremes(x):
+    max_x = max(x)
+    min_x = min(x)
+    #print(max_x)
+    #print(min_x)
+    return(max_x,min_x)
 
 import scipy.signal as signal
 def filter(volt):
     # First, design the Buterworth filter
-    N = 3  # Filter order
-    Wn = 0.1  # Cutoff frequency
+    N = 5  # Filter order
+    Wn = 0.18  # Cutoff frequency (need to optimize)
     B, A = signal.butter(N, Wn, output='ba')
     smooth_volt = signal.filtfilt(B, A, volt) #cuts off the peak :(
     plt.plot(volt[0:500], 'r-')
