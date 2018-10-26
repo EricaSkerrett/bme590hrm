@@ -4,7 +4,7 @@ from HRM import read_files
 # check that folder is there
 
 @pytest.mark.parametrize("candidate, expected" [
-    (folder, TypeError),
+    (8, TypeError),
     ])
 def test_make_dir(candidate, expected):
     with pytest.raises(expected):
