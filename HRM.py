@@ -23,7 +23,7 @@ def main():
     # extremes(volt)
     smooth_volt = filter(volt)
     (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
-    mean_HR = find_mean_HR(time_duration, beats)
+    (mean_hr_bpm, num_beats) = find_mean_HR(time_duration, beats)
     # peak info
     # plt.show()
 
@@ -121,7 +121,7 @@ def find_peaks(x, y):
 def find_mean_HR(time_duration, beats):
     num_beats = beats.size
     mean_HR = num_beats/time_duration*60
-    return(mean_HR)
+    return(mean_HR, num_beats)
 
 
 if __name__ == "__main__":
