@@ -21,9 +21,11 @@ def main():
     # extremes(volt)
     smooth_volt = filter(volt)
 
+
 def make_dir(folder):
     if not isinstance(folder, str):
-        raise TypeError("Path to folder with test data must be entered as string")
+        raise TypeError("Path to folder with test data must "
+                        "be entered as string")
     dir = os.listdir(folder)
     return(dir)
 
