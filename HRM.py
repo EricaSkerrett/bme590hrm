@@ -11,7 +11,8 @@ folder = "/users/esker/MedicalDeviceSoftware/bme590hrm/test_data/"
 
 
 def main():
-    files = read_files()
+    dir = make_dir(folder)
+    files = read_files(dir)
     (time, volt, rawdata) = open_files(files)
     print(volt)
     (max_t, min_t) = extremes(time)
@@ -19,15 +20,22 @@ def main():
     # extremes(volt)
     smooth_volt = filter(volt)
 
+def make_dir(folder):
+    if not isinstance(folder, str):
+        raise TypeError("Path to folder with test data must be entered as string")
+    dir = os.listdir(folder)
+    return(dir)
 
-def read_files():
+
+def read_files(dir):
     files = []
-    dirs = os.listdir(folder)
-    for file in dirs:
+    for file in dir:
         if file.endswith('.csv'):
             files.append(file)
     sorted(files)  # trying to put it into numerical order but it's not working
     # print(files)
+    if dir == []:
+        raise IndexError("No .csv files present in folder")
     return(files)
 
 
