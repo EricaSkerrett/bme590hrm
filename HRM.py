@@ -18,6 +18,7 @@ def main():
     print(volt)
     (max_t, min_t) = extremes(time)
     (max_v, min_v) = extremes(volt)
+    time_duration = duration(max_t, min_t)  # Time duration of ECG strip
     # extremes(volt)
     smooth_volt = filter(volt)
 
@@ -69,6 +70,11 @@ def extremes(x):
     # print(max_x)
     # print(min_x)
     return(max_x, min_x)
+
+
+def duration(x, y):
+    diff = x - y
+    return diff
 
 
 def filter(volt):
