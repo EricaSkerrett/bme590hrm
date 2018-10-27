@@ -102,7 +102,8 @@ def filter(volt):
 
 
 def find_peaks(x):
-    y = signal.find_peaks(x,None,3)  # come back to review output and need to make unit test
+    y = signal.find_peaks(x, None, 3)
+    # come back to review output and need to make unit test
     print(y)
 
 if __name__ == "__main__":
