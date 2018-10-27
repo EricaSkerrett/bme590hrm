@@ -3,6 +3,7 @@ from HRM import make_dir
 from HRM import read_files
 from HRM import extremes
 from HRM import duration
+from HRM import make_tuple
 
 # @pytest.mark.parametrize("candidate, expected" [
 #    (8, TypeError),
@@ -31,3 +32,10 @@ def test_duration():
     y = 3
     z = duration(x, y)
     assert z == 2
+
+
+def test__make_tuple():
+    x = 1
+    y = 2
+    z = make_tuple(x, y)
+    assert z == (1, 2)
