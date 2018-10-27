@@ -13,16 +13,19 @@ folder = "/users/esker/MedicalDeviceSoftware/bme590hrm/test_data/"
 def main():
     dir = make_dir(folder)
     files = read_files(dir)
-    (time, volt, rawdata) = open_files(files)
+    csv_f = open_files(files)
+    (time, volt, rawdata) = split_into_array(csv_f)
     print(volt)
     (max_t, min_t) = extremes(time)
     (max_v, min_v) = extremes(volt)
     # extremes(volt)
     smooth_volt = filter(volt)
 
+
 def make_dir(folder):
     if not isinstance(folder, str):
-        raise TypeError("Path to folder with test data must be entered as string")
+        raise TypeError("Path to folder with test data must "
+                        "be entered as string")
     dir = os.listdir(folder)
     return(dir)
 
@@ -42,7 +45,12 @@ def read_files(dir):
 def open_files(files):  # open just 1 file for now
     f = open(folder + files[0])
     csv_f = csv.reader(f)
+    print(csv_f)
     # print(files[0])
+    return(csv_f)
+
+
+def split_into_array(csv_f):
     time = []  # will eventually want to put these into a dictionary
     volt = []
     rawdata = []

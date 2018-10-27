@@ -1,29 +1,25 @@
 import pytest
 from HRM import make_dir
 from HRM import read_files
-# check that folder is there
+from HRM import extremes
 
-@pytest.mark.parametrize("candidate, expected" [
-    (8, TypeError),
-    ])
-def test_make_dir(candidate, expected):
-    with pytest.raises(expected):
-        make_dir(candidate)
-
-
-@pytest.mark.parametrize("candidate, expected" [
-    ([], IndexError),
-    ])
-def test_read_files(candidate, expected):
-    with pytest.raises(expected):
-        read_files(candidate)
+# @pytest.mark.parametrize("candidate, expected" [
+#    (8, TypeError),
+#    ])
+# def test_make_dir(candidate, expected):
+#    with pytest.raises(expected):
+#        make_dir(candidate)
 
 
-# from HRM import open_files
+# @pytest.mark.parametrize("candidate, expected" [
+#    ([], IndexError),
+#    ])
+# def test_read_files(candidate, expected):
+#    with pytest.raises(expected):
+#        read_files(candidate)
 
-# a = ['a.csv','b.csv','c.csv']
-# b = ['a.csv','b.xyz','b.csv','c.csv']
 
-# def test_read_files():
-#  files = read_files()
-# assert files == a
+def test_extremes():
+    x = [1, 2, 3]
+    (y, z) = extremes(x)
+    assert (y, z) == (3, 1)
