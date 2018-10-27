@@ -26,7 +26,8 @@ def main():
     volt_extremes = make_tuple(max_v, min_v)  # Tuple of min and max voltages
     # extremes(volt)
     smooth_volt = filter(volt)
-    (beats, peak_voltages) = find_peaks(smooth_volt, time) # np arrays of peak info
+    (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
+    # peak info
     # plt.show()
 
 
@@ -106,7 +107,7 @@ def filter(volt):
 
 
 def find_peaks(x, y):
-    peaks, _ = signal.find_peaks(x, height = 0.2) # does not find the last peak
+    peaks, _ = signal.find_peaks(x, height=0.2)  # does not find the last peak
     plt.plot(x)
     plt.plot(peaks, x[peaks], "x")
     plt.plot(np.zeros_like(x), "--", color="gray")
