@@ -2,6 +2,7 @@ import os
 import sys
 import csv
 import scipy
+import scipy.signal
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal as signal
@@ -15,13 +16,16 @@ def main():
     files = read_files(dir)
     csv_f = open_files(files)
     (time, volt, rawdata) = split_into_array(csv_f)
-    print(volt)
+    # print(volt)
     (max_t, min_t) = extremes(time)
+    print(type(max_t))
+    print(max_t)
     (max_v, min_v) = extremes(volt)
     time_duration = duration(max_t, min_t)  # Time duration of ECG strip
     volt_extremes = make_tuple(max_v, min_v)  # Tuple of min and max voltages
     # extremes(volt)
     smooth_volt = filter(volt)
+    peaks = find_peaks(smooth_volt)
 
 
 def make_dir(folder):
@@ -66,8 +70,10 @@ def split_into_array(csv_f):
 
 
 def extremes(x):
-    max_x = max(x)
-    min_x = min(x)
+    max_x1 = max(x)
+    min_x1 = min(x)
+    max_x = float(max_x1)
+    min_x = float(min_x1)
     # print(max_x)
     # print(min_x)
     return(max_x, min_x)
@@ -94,6 +100,10 @@ def filter(volt):
     plt.show()
     return(smooth_volt)
 
+
+def find_peaks(x):
+    y = signal.find_peaks(x,None,3)  # come back to review output and need to make unit test
+    print(y)
 
 if __name__ == "__main__":
     main()
