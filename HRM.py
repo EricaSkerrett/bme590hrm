@@ -16,17 +16,14 @@ def main():
     files = read_files(dir)
     csv_f = open_files(files)
     (time, volt, rawdata) = split_into_array(csv_f)
-    # print(time)
-    # print(volt)
     (max_t, min_t) = extremes(time)
-    print(type(max_t))
-    print(max_t)
     (max_v, min_v) = extremes(volt)
     time_duration = duration(max_t, min_t)  # Time duration of ECG strip
     volt_extremes = make_tuple(max_v, min_v)  # Tuple of min and max voltages
     # extremes(volt)
     smooth_volt = filter(volt)
     (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
+    mean_HR = find_mean_HR(time_duration, beats)
     # peak info
     # plt.show()
 
@@ -54,7 +51,7 @@ def read_files(dir):
 def open_files(files):  # open just 1 file for now
     f = open(folder + files[0])
     csv_f = csv.reader(f)
-    print(csv_f)
+    # print(csv_f)
     # print(files[0])
     return(csv_f)
 
@@ -64,11 +61,11 @@ def split_into_array(csv_f):
     volt = []
     rawdata = []
     for i in csv_f:
-        time.append(i[0])
+        time.append((i[0]))
         volt.append(float(i[1]))
         rawdata.append([i[0], i[1]])
-    # print(time)
-    # print(volt)
+    volt = [float(i) for i in volt]
+    time = [float(i) for i in time]
     return(time, volt, rawdata)
 
 
@@ -116,8 +113,15 @@ def find_peaks(x, y):
     peak_voltages = x[peaks]
     # print(peak_voltages) # voltage of peaks
     beats = np.asarray(y)
+    beats = beats[peaks]
     # print(peak_locations[peaks]) # time of peaks
     return(beats, peak_voltages)
+
+
+def find_mean_HR(time_duration, beats):
+    num_beats = beats.size
+    mean_HR = num_beats/time_duration*60
+    return(mean_HR)
 
 
 if __name__ == "__main__":
