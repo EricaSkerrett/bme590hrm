@@ -18,12 +18,14 @@ def main():
     (time, volt, rawdata) = split_into_array(csv_f)
     (max_t, min_t) = extremes(time)
     (max_v, min_v) = extremes(volt)
-    duration = find_duration(max_t, min_t)  # Time duration of ECG strip
-    voltage_extremes = make_tuple(max_v, min_v)  # Tuple of min and max voltages
+    time_duration = find_duration(max_t, min_t)  # Time duration of ECG strip
+    voltage_extremes = make_tuple(max_v, min_v)  # Tuple of min/max voltages
     smooth_volt = filter(volt)
     (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
-    (mean_hr_bpm, num_beats) = find_mean_HR(duration, beats)
-    metrics = make_dict(files, mean_hr_bpm, voltage_extremes, duration, num_beats, beats)
+    (mean_hr_bpm, num_beats) = find_mean_HR(time_duration,
+                                            beats)
+    metrics = make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
+                        num_beats, beats)
     # plt.show()
 
 
@@ -113,12 +115,13 @@ def find_mean_HR(time_duration, beats):
     return(mean_HR, num_beats)
 
 
-def make_dict(files, mean_hr_bpm, voltage_extremes, duration, num_beats, beats):
+def make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
+              num_beats, beats):
     metrics = dict([
         ('File_Name', files[0]),  # Only the first file for now
         ('Mean_HR_(BPM)', mean_hr_bpm),
         ('Voltage_Extremes', voltage_extremes),
-        ('Data_Duration', duration),
+        ('Data_Duration', time_duration),
         ('Number_Beats', num_beats),
         ('Time_of_Beats', beats),
     ])

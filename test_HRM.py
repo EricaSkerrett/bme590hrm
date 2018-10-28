@@ -2,7 +2,7 @@ import pytest
 from HRM import make_dir
 from HRM import read_files
 from HRM import extremes
-from HRM import duration
+from HRM import find_duration
 from HRM import make_tuple
 
 # @pytest.mark.parametrize("candidate, expected" [
@@ -27,10 +27,10 @@ def test_extremes():
     assert (y, z) == (3, 1)
 
 
-def test_duration():
+def test_find_duration():
     x = 5
     y = 3
-    z = duration(x, y)
+    z = find_duration(x, y)
     assert z == 2
 
 
