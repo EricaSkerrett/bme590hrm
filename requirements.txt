@@ -6,3 +6,5 @@ ipython
 jupyter
 scipy
 matplotlib
+sphinxcontrib-napoleon
+sphinx
