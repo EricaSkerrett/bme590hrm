@@ -18,13 +18,12 @@ def main():
     (time, volt, rawdata) = split_into_array(csv_f)
     (max_t, min_t) = extremes(time)
     (max_v, min_v) = extremes(volt)
-    time_duration = duration(max_t, min_t)  # Time duration of ECG strip
-    volt_extremes = make_tuple(max_v, min_v)  # Tuple of min and max voltages
-    # extremes(volt)
+    duration = find_duration(max_t, min_t)  # Time duration of ECG strip
+    voltage_extremes = make_tuple(max_v, min_v)  # Tuple of min and max voltages
     smooth_volt = filter(volt)
     (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
-    (mean_hr_bpm, num_beats) = find_mean_HR(time_duration, beats)
-    # peak info
+    (mean_hr_bpm, num_beats) = find_mean_HR(duration, beats)
+    metrics = make_dict(files, mean_hr_bpm, voltage_extremes, duration, num_beats, beats)
     # plt.show()
 
 
@@ -42,7 +41,6 @@ def read_files(dir):
         if file.endswith('.csv'):
             files.append(file)
     sorted(files)  # trying to put it into numerical order but it's not working
-    # print(files)
     if dir == []:
         raise IndexError("No .csv files present in folder")
     return(files)
@@ -51,8 +49,6 @@ def read_files(dir):
 def open_files(files):  # open just 1 file for now
     f = open(folder + files[0])
     csv_f = csv.reader(f)
-    # print(csv_f)
-    # print(files[0])
     return(csv_f)
 
 
@@ -74,12 +70,10 @@ def extremes(x):
     min_x1 = min(x)
     max_x = float(max_x1)
     min_x = float(min_x1)
-    # print(max_x)
-    # print(min_x)
     return(max_x, min_x)
 
 
-def duration(x, y):
+def find_duration(x, y):
     diff = x - y
     return diff
 
@@ -90,16 +84,14 @@ def make_tuple(x, y):
 
 
 def filter(volt):
-    # First, design the Buterworth filter
     N = 5  # Filter order
     Wn = 0.18  # Cutoff frequency (need to optimize)
     B, A = signal.butter(N, Wn, output='ba')
     smooth_volt = signal.filtfilt(B, A, volt)  # cuts off the peak :(
-    # print(type(smooth_volt))
     length = smooth_volt.size
     plt.plot(volt[0:length], 'r-')
     plt.plot(smooth_volt[0:length], 'b-')
-    # plt.show()
+    plt.show()
     return(smooth_volt)
 
 
@@ -108,13 +100,10 @@ def find_peaks(x, y):
     plt.plot(x)
     plt.plot(peaks, x[peaks], "x")
     plt.plot(np.zeros_like(x), "--", color="gray")
-    # plt.show()
-    # print(peaks) # array position
+    plt.show()
     peak_voltages = x[peaks]
-    # print(peak_voltages) # voltage of peaks
     beats = np.asarray(y)
     beats = beats[peaks]
-    # print(peak_locations[peaks]) # time of peaks
     return(beats, peak_voltages)
 
 
@@ -122,6 +111,19 @@ def find_mean_HR(time_duration, beats):
     num_beats = beats.size
     mean_HR = num_beats/time_duration*60
     return(mean_HR, num_beats)
+
+
+def make_dict(files, mean_hr_bpm, voltage_extremes, duration, num_beats, beats):
+    metrics = dict([
+        ('File_Name', files[0]),  # Only the first file for now
+        ('Mean_HR_(BPM)', mean_hr_bpm),
+        ('Voltage_Extremes', voltage_extremes),
+        ('Data_Duration', duration),
+        ('Number_Beats', num_beats),
+        ('Time_of_Beats', beats),
+    ])
+    print(metrics)
+    return(metrics)
 
 
 if __name__ == "__main__":
