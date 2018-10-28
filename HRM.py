@@ -140,4 +140,4 @@ if __name__ == "__main__":
                                             beats)
     metrics = make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
                         num_beats, beats)
-    make_json(metrics,files)
+    make_json(metrics, files)
