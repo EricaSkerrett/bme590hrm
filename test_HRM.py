@@ -1,5 +1,5 @@
 import pytest
-from HRM import make_dir
+from HRM import show_dir
 from HRM import read_files
 from HRM import extremes
 from HRM import find_duration
@@ -8,9 +8,9 @@ from HRM import make_tuple
 # @pytest.mark.parametrize("candidate, expected" [
 #    (8, TypeError),
 #    ])
-# def test_make_dir(candidate, expected):
+# def test_show_dir(candidate, expected):
 #    with pytest.raises(expected):
-#        make_dir(candidate)
+#        mshow_dir(candidate)
 
 
 # @pytest.mark.parametrize("candidate, expected" [
