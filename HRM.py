@@ -6,27 +6,10 @@ import scipy.signal
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal as signal
+import json
 
 folder = "/users/esker/MedicalDeviceSoftware/bme590hrm/test_data/"
 # User types in path to data folder
-
-
-def main():
-    dir = make_dir(folder)
-    files = read_files(dir)
-    csv_f = open_files(files)
-    (time, volt, rawdata) = split_into_array(csv_f)
-    (max_t, min_t) = extremes(time)
-    (max_v, min_v) = extremes(volt)
-    time_duration = find_duration(max_t, min_t)  # Time duration of ECG strip
-    voltage_extremes = make_tuple(max_v, min_v)  # Tuple of min/max voltages
-    smooth_volt = filter(volt)
-    (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
-    (mean_hr_bpm, num_beats) = find_mean_HR(time_duration,
-                                            beats)
-    metrics = make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
-                        num_beats, beats)
-    # plt.show()
 
 
 def make_dir(folder):
@@ -117,6 +100,7 @@ def find_mean_HR(time_duration, beats):
 
 def make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
               num_beats, beats):
+    beats = beats.tolist()  # so that dictionary can be stored as JSON
     metrics = dict([
         ('File_Name', files[0]),  # Only the first file for now
         ('Mean_HR_(BPM)', mean_hr_bpm),
@@ -125,9 +109,35 @@ def make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
         ('Number_Beats', num_beats),
         ('Time_of_Beats', beats),
     ])
-    print(metrics)
+    # print(type(files[0]))
+    # print(type(mean_hr_bpm))
+    # print(type(voltage_extremes))
+    # print(type(num_beats))
+    # print(type(beats))
+    # print(type(beats))
+    # print(metrics)
     return(metrics)
 
 
+def make_json(dictionary, files):
+    file_name = str(files[0])
+    with open(file_name, 'w') as fp:
+        json.dump(dictionary, fp)  # come back to fix how the data is stored
+
+
 if __name__ == "__main__":
-    main()
+    dir = make_dir(folder)
+    files = read_files(dir)
+    csv_f = open_files(files)
+    (time, volt, rawdata) = split_into_array(csv_f)
+    (max_t, min_t) = extremes(time)
+    (max_v, min_v) = extremes(volt)
+    time_duration = find_duration(max_t, min_t)  # Time duration of ECG strip
+    voltage_extremes = make_tuple(max_v, min_v)  # Tuple of min/max voltages
+    smooth_volt = filter(volt)
+    (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
+    (mean_hr_bpm, num_beats) = find_mean_HR(time_duration,
+                                            beats)
+    metrics = make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
+                        num_beats, beats)
+    make_json(metrics, files)
