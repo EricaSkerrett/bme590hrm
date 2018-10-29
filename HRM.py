@@ -176,6 +176,16 @@ def find_peaks(x, y):
     return(beats, peak_voltages)
 
 
+def get_input(time_duration):
+    time_avg = time_duration
+    user_avg = input("Type time for mean heart rate:  ")
+    type(user_avg)
+    user_avg = int(user_avg)
+    if user_avg < time_duration:
+        time_avg = user_avg
+    return time_avg
+
+
 def find_mean_HR(time_duration, beats):
     """Finds mean over entire duration of signal
 
@@ -247,7 +257,8 @@ if __name__ == "__main__":
     voltage_extremes = make_tuple(max_v, min_v)  # Tuple of min/max voltages
     smooth_volt = filter(volt)
     (beats, peak_voltages) = find_peaks(smooth_volt, time)  # np arrays of
-    (mean_hr_bpm, num_beats) = find_mean_HR(time_duration,
+    time_avg = get_input(time_duration)
+    (mean_hr_bpm, num_beats) = find_mean_HR(time_avg,
                                             beats)
     metrics = make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
                         num_beats, beats)
