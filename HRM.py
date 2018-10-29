@@ -149,7 +149,6 @@ def filter(volt):
     plt.plot(volt[0:length], 'r-')
     plt.plot(smooth_volt[0:length], 'b-')
     plt.show()
-    print(type(smooth_volt))
     return(smooth_volt)
 
 
@@ -172,6 +171,8 @@ def find_peaks(x, y):
     peak_voltages = x[peaks]
     beats = np.asarray(y)
     beats = beats[peaks]
+    # print(beats)
+    # print(peak_voltages)
     return(beats, peak_voltages)
 
 
@@ -201,7 +202,7 @@ def make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
         param3 (tuple): voltage extremes
         param4 (float): time duration
         param5 (int): number of beats
-        param6 (beats): array of beat times
+        param6 (array): array of beat times
 
     Returns:
         (dict) compiled metrics
