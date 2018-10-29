@@ -50,10 +50,10 @@ def test__make_tuple():
 
 
 def test_filter():  # specific to current filter settings
-     a = [1, 1, 1, 1, 1, 1, 10, 10, 10, 10, 10, 10, 10, 1, 1, 1, 1, 1, 1]
-     b = filter(a)
-     c = sum(b)
-     assert c == 84.85787742621548
+    a = [1, 1, 1, 1, 1, 1, 10, 10, 10, 10, 10, 10, 10, 1, 1, 1, 1, 1, 1]
+    b = filter(a)
+    c = sum(b)
+    assert c == 84.85787742621548
 
 
 def test_find_peaks():
