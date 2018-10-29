@@ -8,4 +8,3 @@ scipy
 matplotlib
 sphinxcontrib-napoleon
 sphinx
-logging
