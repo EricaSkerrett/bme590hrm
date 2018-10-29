@@ -36,10 +36,12 @@ def test_extremes():
 
 
 def test_find_duration():
-    x = 5
-    y = 3
+    # with pytest.raises(TypeError):
+        # find_duration('string')
+    x = 5.0
+    y = 3.0
     z = find_duration(x, y)
-    assert z == 2
+    assert z == 2.0
 
 
 def test__make_tuple():

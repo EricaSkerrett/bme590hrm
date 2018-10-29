@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal as signal
 import json
+import logging
 
 folder = "/users/esker/MedicalDeviceSoftware/bme590hrm/test_data/"
 
@@ -22,10 +23,14 @@ def show_dir(folder):
 
     """
     if not isinstance(folder, str):
-        raise TypeError("Path to folder with test data must "
-                        "be entered as string")
+        try:
+            folder = folder.string
+        except:
+            TypeError("Path to folder with test data must "
+                      "be entered as string")
+            logging.error("path entered incorrectly")
     dir = os.listdir(folder)
-    return(dir)
+    return (dir)
 
 
 def read_files(dir):
@@ -44,7 +49,7 @@ def read_files(dir):
             files.append(file)
     if dir == []:
         raise IndexError("No .csv files present in folder")
-    return(files)
+    return (files)
 
 
 def open_files(files):  # open just 1 file for now
@@ -59,7 +64,7 @@ def open_files(files):  # open just 1 file for now
     """
     f = open(folder + files[0])
     csv_f = csv.reader(f)
-    return(csv_f)
+    return (csv_f)
 
 
 def split_into_array(csv_f):
@@ -81,7 +86,7 @@ def split_into_array(csv_f):
         # rawdata.append([i[0], i[1]])
     volt = [float(i) for i in volt]
     time = [float(i) for i in time]
-    return(time, volt)
+    return (time, volt)
 
 
 def extremes(x):
@@ -98,7 +103,7 @@ def extremes(x):
     min_x1 = min(x)
     max_x = float(max_x1)
     min_x = float(min_x1)
-    return(max_x, min_x)
+    return (max_x, min_x)
 
 
 def find_duration(x, y):
@@ -112,6 +117,9 @@ def find_duration(x, y):
         float - difference between 2 values
 
     """
+    # x = 'string'
+    if type(x) is not float or type(y) is not float:
+        raise TypeError("inputs must be floats")
     diff = x - y
     return diff
 
@@ -149,7 +157,7 @@ def filter(volt):
     plt.plot(volt[0:length], 'r-')
     plt.plot(smooth_volt[0:length], 'b-')
     plt.show()
-    return(smooth_volt)
+    return (smooth_volt)
 
 
 def find_peaks(x, y):
@@ -173,14 +181,14 @@ def find_peaks(x, y):
     beats = beats[peaks]
     # print(beats)
     # print(peak_voltages)
-    return(beats, peak_voltages)
+    return (beats, peak_voltages)
 
 
 def get_input(time_duration):
     time_avg = time_duration
-    user_avg = input("Type time for mean heart rate:  ")
+    user_avg = input("Type minutes for mean heart rate:  ")
     type(user_avg)
-    user_avg = int(user_avg)
+    user_avg = int(user_avg) * 60
     if user_avg < time_duration:
         time_avg = user_avg
     return time_avg
@@ -198,8 +206,8 @@ def find_mean_HR(time_duration, beats):
 
     """
     num_beats = beats.size
-    mean_HR = num_beats/time_duration*60
-    return(mean_HR, num_beats)
+    mean_HR = num_beats / time_duration * 60
+    return (mean_HR, num_beats)
 
 
 def make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
@@ -227,7 +235,7 @@ def make_dict(files, mean_hr_bpm, voltage_extremes, time_duration,
         ('Number_Beats', num_beats),
         ('Time_of_Beats', beats),
     ])
-    return(metrics)
+    return (metrics)
 
 
 def make_json(dictionary, files):
